@@ -11,58 +11,189 @@ class MainUIBase extends StatefulWidget {
 }
 
 class MainUIBaseState extends State<MainUIBase> {
+  TimeOfDay bedTime = const TimeOfDay(hour: 22, minute: 0);
+
+  String getTimeToBed() {
+    if (TimeOfDay.now().hour * 60 + TimeOfDay.now().minute <
+        bedTime.hour * 60 + bedTime.minute) {
+      return '${bedTime.hour - TimeOfDay.now().hour} hrs ${bedTime.minute - TimeOfDay.now().minute} mins until bed time';
+    }
+    if (TimeOfDay.now().hour == bedTime.hour) {
+      if (TimeOfDay.now().minute == bedTime.minute) return 'Time to Sleep';
+      return '${TimeOfDay.now().minute - bedTime.minute} mins past bed time';
+    }
+    return '${TimeOfDay.now().hour - bedTime.hour} hrs ${TimeOfDay.now().minute - bedTime.minute} mins past bed time';
+  }
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 60),
-        child: Row(
-          children: [
-            Expanded(child: PageView()),
-            const VerticalDivider(
-              thickness: 1,
-              color: Color(0x20000000),
-            ),
-            const SizedBox(width: 12.5),
-            Container(
-              constraints: const BoxConstraints(maxWidth: 400),
-              width: MediaQuery.of(context).size.width / 4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: screenWidth > 800
+          ? Padding(
+              padding: const EdgeInsets.fromLTRB(60, 60, 60, 30),
+              child: Row(
                 children: [
-                  const Text(
-                    'Today',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w600,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Habit Tracker',
+                          style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          getTimeToBed(),
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.black38,
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 18),
-                  const ProgressBar(
-                    backgroundColor: Color(0x2000397C),
-                    fillColor: Color(0xFF30ACD3),
-                    fillAmount: .25,
+                  const VerticalDivider(
+                    thickness: 1,
+                    color: Color(0x20000000),
                   ),
-                  const SizedBox(height: 36),
-                  TodayHabit(
-                    Habit(
-                        name: 'Anki',
-                        requirement: '20 mins or finish cards',
-                        partialRequirement: 'do 10 cards',
-                        completed: 50,
-                        partiallyCompleted: 10,
-                        failed: 10,
-                        excused: 3,
-                        streak: 54),
-                    habitState.future,
+                  const SizedBox(width: 12.5),
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 400),
+                    width: screenWidth / 4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Today',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 18),
+                        const ProgressBar(
+                          backgroundColor: Color(0x2000397C),
+                          fillColor: Color(0xFF30ACD3),
+                          fillAmount: .25,
+                        ),
+                        const SizedBox(height: 36),
+                        Expanded(
+                          child: Material(
+                            child: ListView(
+                              children: [
+                                TodayHabit(
+                                  Habit(
+                                    name: 'Anki',
+                                    requirement: '20 mins or finish cards',
+                                    partialRequirement: 'do 10 cards',
+                                    completed: 50,
+                                    partiallyCompleted: 10,
+                                    failed: 10,
+                                    excused: 3,
+                                    streak: 54,
+                                  ),
+                                  HabitState.completed,
+                                ),
+                                const SizedBox(height: 18),
+                                TodayHabit(
+                                  Habit(
+                                    name: 'Anki',
+                                    requirement: '20 mins or finish cards',
+                                    partialRequirement: 'do 10 cards',
+                                    completed: 50,
+                                    partiallyCompleted: 10,
+                                    failed: 10,
+                                    excused: 3,
+                                    streak: 54,
+                                  ),
+                                  HabitState.failed,
+                                ),
+                                const SizedBox(height: 18),
+                                TodayHabit(
+                                  Habit(
+                                    name: 'Anki',
+                                    requirement: '20 mins or finish cards',
+                                    partialRequirement: 'do 10 cards',
+                                    completed: 50,
+                                    partiallyCompleted: 10,
+                                    failed: 10,
+                                    excused: 3,
+                                    streak: 54,
+                                  ),
+                                  HabitState.partiallyCompleted,
+                                ),
+                                const SizedBox(height: 18),
+                                TodayHabit(
+                                  Habit(
+                                    name: 'Anki',
+                                    requirement: '20 mins or finish cards',
+                                    partialRequirement: 'do 10 cards',
+                                    completed: 50,
+                                    partiallyCompleted: 10,
+                                    failed: 10,
+                                    excused: 3,
+                                    streak: 54,
+                                  ),
+                                  HabitState.excused,
+                                ),
+                                const SizedBox(height: 18),
+                                TodayHabit(
+                                  Habit(
+                                    name: 'Anki',
+                                    requirement: '20 mins or finish cards',
+                                    partialRequirement: 'do 10 cards',
+                                    completed: 50,
+                                    partiallyCompleted: 10,
+                                    failed: 10,
+                                    excused: 3,
+                                    streak: 54,
+                                  ),
+                                  HabitState.future,
+                                ),
+                                const SizedBox(height: 18),
+                                TodayHabit(
+                                  Habit(
+                                    name: 'Anki',
+                                    requirement: '20 mins or finish cards',
+                                    partialRequirement: 'do 10 cards',
+                                    completed: 50,
+                                    partiallyCompleted: 10,
+                                    failed: 10,
+                                    excused: 3,
+                                    streak: 54,
+                                  ),
+                                  HabitState.excused,
+                                ),
+                                const SizedBox(height: 18),
+                                TodayHabit(
+                                  Habit(
+                                    name: 'Anki',
+                                    requirement: '20 mins or finish cards',
+                                    partialRequirement: 'do 10 cards',
+                                    completed: 50,
+                                    partiallyCompleted: 10,
+                                    failed: 10,
+                                    excused: 3,
+                                    streak: 54,
+                                  ),
+                                  HabitState.future,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
+            )
+          : null, // different layout if too narrow
     );
   }
 }

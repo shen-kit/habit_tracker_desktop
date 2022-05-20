@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Habit {
   final String name;
@@ -24,7 +25,7 @@ class Habit {
   });
 }
 
-enum habitState {
+enum HabitState {
   completed,
   partiallyCompleted,
   failed,
@@ -33,11 +34,29 @@ enum habitState {
   future,
 }
 
-Map<habitState, Color> habitStateColors = {
-  habitState.completed: const Color(0xFF358F74),
-  habitState.partiallyCompleted: const Color(0xFF347F9F),
-  habitState.failed: const Color(0xFFC03F3F),
-  habitState.excused: const Color(0xFFCF9D51),
-  habitState.skip: Colors.transparent,
-  habitState.future: Colors.transparent,
+Map<HabitState, String> habitStateNames = {
+  HabitState.completed: 'Completed',
+  HabitState.partiallyCompleted: 'Partially Completed',
+  HabitState.failed: 'Failed',
+  HabitState.excused: 'Excused',
+  HabitState.skip: 'Not Today',
+  HabitState.future: 'Mark Complete',
+};
+
+Map<HabitState, Color> habitStateColors = {
+  HabitState.completed: const Color(0xFF358F74),
+  HabitState.partiallyCompleted: const Color(0xFF347F9F),
+  HabitState.failed: const Color(0xFFC03F3F),
+  HabitState.excused: const Color(0xFFAC7B33),
+  HabitState.skip: Colors.transparent,
+  HabitState.future: Colors.transparent,
+};
+
+Map<HabitState, IconData> habitStateIcons = {
+  HabitState.completed: FontAwesomeIcons.circleCheck,
+  HabitState.partiallyCompleted: FontAwesomeIcons.circleCheck,
+  HabitState.failed: Icons.cancel_outlined,
+  HabitState.excused: Icons.remove_circle_outline_rounded,
+  HabitState.skip: Icons.circle_outlined,
+  HabitState.future: Icons.circle_outlined,
 };
