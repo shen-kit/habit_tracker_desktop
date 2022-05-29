@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker_desktop/models/habit.dart';
+import 'package:habit_tracker_desktop/screens/main/all_time_view.dart';
+import 'package:habit_tracker_desktop/screens/main/month_view.dart';
+import 'package:habit_tracker_desktop/screens/main/year_view.dart';
 import 'package:habit_tracker_desktop/shared/progress_bar.dart';
 import 'package:habit_tracker_desktop/shared/today_habit.dart';
 
@@ -31,8 +34,12 @@ class MainUIBaseState extends State<MainUIBase> {
     return '${TimeOfDay.now().hour - bedTime.hour} hrs ${TimeOfDay.now().minute - bedTime.minute} mins past bed time';
   }
 
+  int currentPage = 0;
+
   @override
   Widget build(BuildContext context) {
+    final PageController pageController = PageController();
+
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -58,7 +65,126 @@ class MainUIBaseState extends State<MainUIBase> {
                             fontSize: 20,
                             color: Colors.black38,
                           ),
-                        )
+                        ),
+                        const SizedBox(height: 40),
+                        Container(
+                          width: 360,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.black12,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextButton(
+                                  child: Text(
+                                    'Month',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: currentPage == 0
+                                          ? Colors.black
+                                          : Colors.black38,
+                                    ),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: currentPage == 0
+                                        ? const Color(0xFF43CDC4)
+                                        : Colors.transparent,
+                                    fixedSize: const Size(110, 40),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(200),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    pageController.animateToPage(
+                                      0,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      curve: Curves.easeOut,
+                                    );
+                                    setState(() => currentPage = 0);
+                                  },
+                                ),
+                                const SizedBox(width: 10),
+                                TextButton(
+                                  child: Text(
+                                    'Year',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: currentPage == 1
+                                          ? Colors.black
+                                          : Colors.black38,
+                                    ),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: currentPage == 1
+                                        ? const Color(0xFF43CDC4)
+                                        : Colors.transparent,
+                                    fixedSize: const Size(110, 40),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(200),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    pageController.animateToPage(
+                                      1,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      curve: Curves.easeOut,
+                                    );
+                                    setState(() => currentPage = 1);
+                                  },
+                                ),
+                                const SizedBox(width: 10),
+                                TextButton(
+                                  child: Text(
+                                    'All Time',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: currentPage == 2
+                                          ? Colors.black
+                                          : Colors.black38,
+                                    ),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: currentPage == 2
+                                        ? const Color(0xFF43CDC4)
+                                        : Colors.transparent,
+                                    fixedSize: const Size(110, 40),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(200),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    pageController.animateToPage(
+                                      2,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      curve: Curves.easeOut,
+                                    );
+                                    setState(() => currentPage = 2);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        Expanded(
+                          child: PageView(
+                            controller: pageController,
+                            children: const [
+                              MonthView(),
+                              YearView(),
+                              AllTimeView(),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -173,21 +299,7 @@ class MainUIBaseState extends State<MainUIBase> {
                                     excused: 3,
                                     streak: 54,
                                   ),
-                                  HabitState.excused,
-                                ),
-                                const SizedBox(height: 18),
-                                TodayHabit(
-                                  Habit(
-                                    name: 'Anki',
-                                    requirement: '20 mins or finish cards',
-                                    partialRequirement: 'do 10 cards',
-                                    completed: 50,
-                                    partiallyCompleted: 10,
-                                    failed: 10,
-                                    excused: 3,
-                                    streak: 54,
-                                  ),
-                                  HabitState.future,
+                                  HabitState.skip,
                                 ),
                               ],
                             ),

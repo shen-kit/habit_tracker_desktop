@@ -23,8 +23,11 @@ class _TodayHabitState extends State<TodayHabit> {
                 widget.habit.excused +
                 widget.habit.failed);
 
-    bool darkForeground =
-        widget.state == HabitState.skip || widget.state == HabitState.future;
+    Color foregroundColor = widget.state == HabitState.future
+        ? Colors.black
+        : widget.state == HabitState.skip
+            ? const Color(0x50000000)
+            : Colors.white;
 
     return ListTile(
       onTap: () {
@@ -36,13 +39,14 @@ class _TodayHabitState extends State<TodayHabit> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
-        side: darkForeground
+        side: foregroundColor == Colors.black
             ? const BorderSide(color: Colors.black38)
-            : BorderSide.none,
+            : foregroundColor == const Color(0x50000000)
+                ? const BorderSide(color: Colors.black12)
+                : BorderSide.none,
       ),
       tileColor: habitStateColors[widget.state],
-      textColor: darkForeground ? Colors.black : Colors.white,
-      iconColor: darkForeground ? Colors.black : Colors.white,
+      textColor: foregroundColor,
       title: SizedBox(
         height: 55,
         child: Stack(
@@ -61,13 +65,12 @@ class _TodayHabitState extends State<TodayHabit> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  FaIcon(
-                    habitStateIcons[widget.state],
-                    size: 18,
-                  ),
+                  FaIcon(habitStateIcons[widget.state],
+                      size: 18, color: foregroundColor),
                   const SizedBox(width: 5),
                   Text(
-                    habitStateNames[widget.state] ?? 'NO NAME ASSIGNED TO STATE',
+                    habitStateNames[widget.state] ??
+                        'NO NAME ASSIGNED TO STATE',
                     style: const TextStyle(
                       fontSize: 14,
                     ),
@@ -89,13 +92,11 @@ class _TodayHabitState extends State<TodayHabit> {
                     textAlign: TextAlign.right,
                   ),
                   const SizedBox(width: 2),
-                  const SizedBox(
+                  SizedBox(
                     // to ensure the numbers align perfectly
                     width: 16,
-                    child: FaIcon(
-                      Icons.percent,
-                      size: 16,
-                    ),
+                    child:
+                        FaIcon(Icons.percent, size: 16, color: foregroundColor),
                   ),
                 ],
               ),
@@ -114,12 +115,10 @@ class _TodayHabitState extends State<TodayHabit> {
                     textAlign: TextAlign.right,
                   ),
                   const SizedBox(width: 2),
-                  const SizedBox(
+                  SizedBox(
                     width: 16,
-                    child: FaIcon(
-                      FontAwesomeIcons.fire,
-                      size: 16,
-                    ),
+                    child: FaIcon(FontAwesomeIcons.fire,
+                        size: 16, color: foregroundColor),
                   ),
                 ],
               ),
