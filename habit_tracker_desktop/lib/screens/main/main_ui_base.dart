@@ -11,12 +11,18 @@ class MainUIBase extends StatefulWidget {
 }
 
 class MainUIBaseState extends State<MainUIBase> {
-  TimeOfDay bedTime = const TimeOfDay(hour: 22, minute: 0);
+  TimeOfDay bedTime = const TimeOfDay(hour: 21, minute: 45);
 
   String getTimeToBed() {
     if (TimeOfDay.now().hour * 60 + TimeOfDay.now().minute <
         bedTime.hour * 60 + bedTime.minute) {
-      return '${bedTime.hour - TimeOfDay.now().hour} hrs ${bedTime.minute - TimeOfDay.now().minute} mins until bed time';
+      int hours = bedTime.hour - TimeOfDay.now().hour;
+      int minutes = bedTime.minute - TimeOfDay.now().minute;
+      if (minutes < 0) {
+        minutes = 60 + minutes;
+        hours -= 1;
+      }
+      return '$hours ${hours == 1 ? 'hr' : 'hrs'} $minutes ${minutes == 1 ? 'min' : 'mins'} until bed time';
     }
     if (TimeOfDay.now().hour == bedTime.hour) {
       if (TimeOfDay.now().minute == bedTime.minute) return 'Time to Sleep';
