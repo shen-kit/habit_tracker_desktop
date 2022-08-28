@@ -19,7 +19,8 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF1D1D1D),
       ),
-      scrollBehavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+      scrollBehavior:
+          ScrollConfiguration.of(context).copyWith(scrollbars: false),
       home: const MainUIBase(),
     );
   }

@@ -6,11 +6,15 @@ class ProgressBar extends StatelessWidget {
     required this.backgroundColor,
     required this.fillColor,
     required this.fillAmount,
+    this.height = 8,
+    this.fontSize = 18,
   }) : super(key: key);
 
   final Color backgroundColor;
   final Color fillColor;
   final double fillAmount;
+  final double height;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class ProgressBar extends StatelessWidget {
         Stack(
           children: [
             Container(
-              height: 10,
+              height: height,
               decoration: BoxDecoration(
                 color: backgroundColor,
                 borderRadius: BorderRadius.circular(5), // fully rounded ends
@@ -28,7 +32,7 @@ class ProgressBar extends StatelessWidget {
             ),
             LayoutBuilder(
               builder: (context, constraints) => Container(
-                height: 10,
+                height: height,
                 width: constraints.maxWidth * fillAmount,
                 decoration: BoxDecoration(
                   color: fillColor,
@@ -40,8 +44,8 @@ class ProgressBar extends StatelessWidget {
         ),
         Text(
           '${(fillAmount * 100).round().toString()}% achieved',
-          style: const TextStyle(
-            fontSize: 20,
+          style: TextStyle(
+            fontSize: fontSize,
           ),
         )
       ],

@@ -16,6 +16,7 @@ class MainUIBase extends StatefulWidget {
 class MainUIBaseState extends State<MainUIBase> {
   TimeOfDay bedTime = const TimeOfDay(hour: 21, minute: 45);
 
+  // returns "[x] hrs [y] mins past bed time"
   String getTimeToBed() {
     if (TimeOfDay.now().hour * 60 + TimeOfDay.now().minute <
         bedTime.hour * 60 + bedTime.minute) {
@@ -35,6 +36,8 @@ class MainUIBaseState extends State<MainUIBase> {
   }
 
   int currentPage = 0;
+  double viewSelectorButtonWidth = 100;
+  double viewSelectorButtonHeight = 35;
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +46,17 @@ class MainUIBaseState extends State<MainUIBase> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: screenWidth > 800
+      body: screenWidth > 1270
           ? Padding(
-              padding: const EdgeInsets.fromLTRB(60, 60, 60, 30),
+              padding: const EdgeInsets.fromLTRB(40, 40, 40, 20),
               child: Row(
                 children: [
+                  // left side of screen (title, month/year/all time view)
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // title
                         const Text(
                           'Habit Tracker',
                           style: TextStyle(
@@ -59,6 +64,7 @@ class MainUIBaseState extends State<MainUIBase> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        // time until bed
                         Text(
                           getTimeToBed(),
                           style: const TextStyle(
@@ -66,115 +72,115 @@ class MainUIBaseState extends State<MainUIBase> {
                             color: Colors.black38,
                           ),
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 30),
+                        // view selection
                         Container(
-                          width: 360,
-                          height: 50,
+                          width: 330,
+                          height: 45,
                           decoration: BoxDecoration(
                             color: Colors.black12,
                             borderRadius: BorderRadius.circular(100),
                           ),
-                          child: Center(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                TextButton(
-                                  child: Text(
-                                    'Month',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: currentPage == 0
-                                          ? Colors.black
-                                          : Colors.black38,
-                                    ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                child: Text(
+                                  'Month',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: currentPage == 0
+                                        ? Colors.black
+                                        : Colors.black38,
                                   ),
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: currentPage == 0
-                                        ? const Color(0xFF43CDC4)
-                                        : Colors.transparent,
-                                    fixedSize: const Size(110, 40),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(200),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    pageController.animateToPage(
-                                      0,
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeOut,
-                                    );
-                                    setState(() => currentPage = 0);
-                                  },
                                 ),
-                                const SizedBox(width: 10),
-                                TextButton(
-                                  child: Text(
-                                    'Year',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: currentPage == 1
-                                          ? Colors.black
-                                          : Colors.black38,
-                                    ),
+                                style: TextButton.styleFrom(
+                                  backgroundColor: currentPage == 0
+                                      ? const Color(0xFF43CDC4)
+                                      : Colors.transparent,
+                                  fixedSize: Size(viewSelectorButtonWidth,
+                                      viewSelectorButtonHeight),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(200),
                                   ),
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: currentPage == 1
-                                        ? const Color(0xFF43CDC4)
-                                        : Colors.transparent,
-                                    fixedSize: const Size(110, 40),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(200),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    pageController.animateToPage(
-                                      1,
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeOut,
-                                    );
-                                    setState(() => currentPage = 1);
-                                  },
                                 ),
-                                const SizedBox(width: 10),
-                                TextButton(
-                                  child: Text(
-                                    'All Time',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: currentPage == 2
-                                          ? Colors.black
-                                          : Colors.black38,
-                                    ),
+                                onPressed: () {
+                                  pageController.animateToPage(
+                                    0,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeOut,
+                                  );
+                                  setState(() => currentPage = 0);
+                                },
+                              ),
+                              const SizedBox(width: 10),
+                              TextButton(
+                                child: Text(
+                                  'Year',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: currentPage == 1
+                                        ? Colors.black
+                                        : Colors.black38,
                                   ),
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: currentPage == 2
-                                        ? const Color(0xFF43CDC4)
-                                        : Colors.transparent,
-                                    fixedSize: const Size(110, 40),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(200),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    pageController.animateToPage(
-                                      2,
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeOut,
-                                    );
-                                    setState(() => currentPage = 2);
-                                  },
                                 ),
-                              ],
-                            ),
+                                style: TextButton.styleFrom(
+                                  backgroundColor: currentPage == 1
+                                      ? const Color(0xFF43CDC4)
+                                      : Colors.transparent,
+                                  fixedSize: Size(viewSelectorButtonWidth,
+                                      viewSelectorButtonHeight),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(200),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  pageController.animateToPage(
+                                    1,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeOut,
+                                  );
+                                  setState(() => currentPage = 1);
+                                },
+                              ),
+                              const SizedBox(width: 10),
+                              TextButton(
+                                child: Text(
+                                  'All Time',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: currentPage == 2
+                                        ? Colors.black
+                                        : Colors.black38,
+                                  ),
+                                ),
+                                style: TextButton.styleFrom(
+                                  backgroundColor: currentPage == 2
+                                      ? const Color(0xFF43CDC4)
+                                      : Colors.transparent,
+                                  fixedSize: Size(viewSelectorButtonWidth,
+                                      viewSelectorButtonHeight),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(200),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  pageController.animateToPage(
+                                    2,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeOut,
+                                  );
+                                  setState(() => currentPage = 2);
+                                },
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 20),
                         Expanded(
                           child: PageView(
                             controller: pageController,
@@ -188,17 +194,21 @@ class MainUIBaseState extends State<MainUIBase> {
                       ],
                     ),
                   ),
+
                   const VerticalDivider(
                     thickness: 1,
-                    color: Color(0x20000000),
+                    color: Colors.black54, //Color(0x20000000),
                   ),
                   const SizedBox(width: 12.5),
+
+                  // today's habits
                   Container(
                     constraints: const BoxConstraints(maxWidth: 400),
                     width: screenWidth / 4,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // "Today" text and progress bar
                         const Text(
                           'Today',
                           textAlign: TextAlign.left,
@@ -214,6 +224,7 @@ class MainUIBaseState extends State<MainUIBase> {
                           fillAmount: .25,
                         ),
                         const SizedBox(height: 36),
+                        // habits list
                         Expanded(
                           child: Material(
                             child: ListView(
